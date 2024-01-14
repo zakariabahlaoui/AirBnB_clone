@@ -7,7 +7,8 @@ from models import storage
 
 
 class BaseModel:
-    """BaseModel class representation, a base class for all other app classes"""
+    """BaseModel class representation,
+    A base class for all other app classes (sub-classes)"""
 
     def __init__(self, *args, **kwargs):
         """
@@ -43,12 +44,14 @@ class BaseModel:
         return rep
 
     def save(self):
-        """Updates the public instance attribute updated_at with the current datetime"""
+        """Updates the public instance attribute updated_at
+        with the current datetime"""
         self.updated_at = datetime.now()
         storage.save()
 
     def to_dict(self):
-        """Returns a dictionary containing all keys/values of __dict__ of an instance"""
+        """Returns a dictionary containing all keys/values
+        of __dict__ of an instance"""
         dict = self.__dict__.copy()
         # add some items to the dictionary
         dict["__class__"] = self.__class__.__name__

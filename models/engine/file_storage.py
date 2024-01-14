@@ -7,8 +7,10 @@ import os
 
 class FileStorage:
     """
-    This class is responsible for storing app objects to a file base storage (JSON)
-    - serializes instances to a JSON file and deserializes JSON file to instances
+    This class is responsible for handling app storage, as well as storing
+    objects to a file based storage (JSON)
+    - serializes instances to a JSON file
+    - deserializes JSON file to instances
     """
 
     __file_path = "file.json"

@@ -33,12 +33,14 @@ class HBNBCommand(cmd.Cmd):
         elif args not in classes:
             print("** class doesn't exist **")
         else:
-            obj = classes[args]()  # initialize new object of the corresponding class
+            # initialize new object of the corresponding class
+            obj = classes[args]()
             obj.save()
             print(obj.id)
 
     def do_show(self, args):
-        """Prints the string representation of an obj based on the class name and id
+        """Prints the string representation of an object
+        based on the class name and id
         Usage: show <class_name> <object_id>"""
         if args == "" or args is None:
             print("** class name missing **")
@@ -86,7 +88,8 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def do_all(self, args):
-        """Prints all string representation of all instances based or not on the class name
+        """Prints all string representation of all instances
+        based or not on the class name
         Usage: all OR all <class_name>"""
         if args == "" or args is None:  # command = all
             # print all objects (any type)
@@ -109,7 +112,8 @@ class HBNBCommand(cmd.Cmd):
         print(obj_list)
 
     def do_update(self, args):
-        """Updates an instance based on the class name and id by adding or updating attribute
+        """Updates an instance based on the class name and id
+        by adding or updating attribute
         Usage: update <class_name> <id> <attribute_name> "<attribute_value>"""
         if args == "" or args is None:
             print("** class name missing **")
@@ -136,7 +140,10 @@ class HBNBCommand(cmd.Cmd):
                 obj = storage.all()[key]
                 attr = args_list[2]
                 # cast the value before assign it to the object
-                attr_type = type(getattr(obj, attr)) if hasattr(obj, attr) else str
+                attr_type = (
+                        type(getattr(obj, attr))
+                        if hasattr(obj, attr) else str
+                )
                 value = attr_type(self.get_attribute_value(args_list))
                 setattr(obj, attr, value)
                 obj.save()
@@ -171,4 +178,3 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
-
