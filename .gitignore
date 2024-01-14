@@ -1,3 +1,7 @@
+# Project files
+file.json
+_temp.py
+
 # Byte-compiled / optimized files
 __pycache__/
 *.pyc
