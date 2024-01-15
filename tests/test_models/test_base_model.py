@@ -12,6 +12,7 @@ from models.base_model import BaseModel
 class TestBaseModel(unittest.TestCase):
     """Unittests for testing init, save, and test_str methods of the BaseModel class."""
 
+
     def test_init(self):
         m_model = BaseModel()
         self.assertIsInstance(m_model.id, str)
