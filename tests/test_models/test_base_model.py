@@ -1,10 +1,18 @@
 #!/usr/bin/python3
+"""Defines unittests for models/base_model.py.
+Unittest classes:
+    TestBaseModel_instantiation
+    TestBaseModel_save
+    TestBaseModel_to_dict
+"""
 
 import unittest
 from datetime import datetime
 from models.base_model import BaseModel
 
 class TestBaseModel(unittest.TestCase):
+    """Unittests for testing init,save,test_str method of the BaseModel class."""
+
     def test_init(self):
         m_model = BaseModel()
         self.assertIsInstance(m_model.id, str)
