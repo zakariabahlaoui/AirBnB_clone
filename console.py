@@ -2,6 +2,7 @@
 """This module contains the command interpreter class"""
 
 import cmd
+import json
 import re
 from models import storage
 
@@ -32,12 +33,29 @@ class HBNBCommand(cmd.Cmd):
         """Intercepts any command before it gets executed"""
         # check if command in method syntax (ex. User.show(id))
         cmd = self.convert_command(args)
-        if not cmd:  # invalid command
+        if not cmd:  # not a method command
             return args
 
+        # handle dictionary case Ex. ("id", {"name": "Julien"})
         if cmd.split(" ")[0] == "update":
-            # handle dictionary case update
-            pass
+            if len(cmd.split(" ")) >= 4:
+                # RegEx = "id", dictionary
+                str_args = " ".join(cmd.split(" ")[2:])
+                match = re.search(r'^"([^"]+)", (\{.*\})$', str_args)
+                if match:
+                    id = match.group(1)
+                    dict_string = match.group(2)
+                    # check if dictionary valid
+                    if self.is_dictionary(dict_string):
+                        class_name = cmd.split(" ")[1]
+                        self.update_with_dict(class_name, id, dict_string)
+                        return ""
+                else:
+                    # handle normal update command
+                    cmd = cmd.replace(", ", " ").replace('"', "")
+            else:
+                # only id passed to the function
+                cmd = cmd.replace('"', "")
 
         self.onecmd(cmd)
         return cmd
@@ -159,8 +177,8 @@ class HBNBCommand(cmd.Cmd):
                 attr = args_list[2]
                 # cast the value before assign it to the object
                 attr_type = (
-                        type(getattr(obj, attr))
-                        if hasattr(obj, attr) else str
+                    type(getattr(obj, attr))
+                    if hasattr(obj, attr) else str
                 )
                 value = attr_type(self.get_attribute_value(args_list))
                 setattr(obj, attr, value)
@@ -229,6 +247,9 @@ class HBNBCommand(cmd.Cmd):
         class_name = match.group(1)
         args = match.group(4) if match.group(4) else ""
 
+        if method == "update":
+            return f"{method} {class_name} {args}"
+
         # create the command using the extracted strings from method syntax
         args = args.split(", ")
         if len(args) >= 1:
@@ -238,6 +259,35 @@ class HBNBCommand(cmd.Cmd):
         command = f"{method} {class_name} {' '.join(args)}"
 
         return command
+
+    def is_dictionary(self, string):
+        """Check if a string holds a valid dictionary representation"""
+        import json
+
+        try:
+            dictionary = json.loads(string)
+            return True
+        except json.JSONDecodeError:
+            return False
+
+    def update_with_dict(self, class_name, id, dict_string):
+        """Updates an instance using a dictionary with key,value pairs
+        Ex. {"name": "Julien", "school": "Holberthon"}"""
+
+        key = f"{class_name}.{id}"  # <class_name>.id
+        if key in storage.all():
+            obj = storage.all()[key]  # target object
+            dict = json.loads(dict_string)
+            for k, v in dict.items():
+                # update the object attribute value (with valid type)
+                # cast the value before assign it to the object
+                attr_type = type(getattr(obj, k)) if hasattr(obj, k) else str
+                setattr(obj, k, attr_type(v))
+
+            # save changes
+            obj.save()
+        else:
+            print("** no instance found **")
 
 
 if __name__ == "__main__":
