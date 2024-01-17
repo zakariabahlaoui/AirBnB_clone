@@ -18,7 +18,7 @@ class TestBaseModel(unittest.TestCase):
     def tearDown(self):
         """Runs after each test"""
         # resets storage data
-        FileStorage._FileStorage__objects_dict = {}
+        FileStorage._FileStorage__objects = {}
         if os.path.isfile(FileStorage._FileStorage__file_path):
             # remove json file
             os.remove(FileStorage._FileStorage__file_path)

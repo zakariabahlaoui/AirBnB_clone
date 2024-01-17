@@ -16,7 +16,7 @@ class TestFileStorage(unittest.TestCase):
     def setUpClass(cls):
         """Executes once before running tests"""
         # resets storage data
-        FileStorage._FileStorage__objects_dict = {}
+        FileStorage._FileStorage__objects = {}
         if os.path.isfile(FileStorage._FileStorage__file_path):
             # remove json file
             os.remove(FileStorage._FileStorage__file_path)
@@ -24,7 +24,7 @@ class TestFileStorage(unittest.TestCase):
     def tearDown(self):
         """Runs after each test"""
         # resets storage data
-        FileStorage._FileStorage__objects_dict = {}
+        FileStorage._FileStorage__objects = {}
         if os.path.isfile(FileStorage._FileStorage__file_path):
             # remove json file
             os.remove(FileStorage._FileStorage__file_path)
@@ -38,14 +38,14 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(str(e.exception), "FileStorage() takes no arguments")
         # check attributes
         self.assertTrue(hasattr(FileStorage, "_FileStorage__file_path"))
-        self.assertTrue(hasattr(FileStorage, "_FileStorage__objects_dict"))
+        self.assertTrue(hasattr(FileStorage, "_FileStorage__objects"))
         self.assertEqual(
-            getattr(FileStorage, "_FileStorage__objects_dict"), {}
+            getattr(FileStorage, "_FileStorage__objects"), {}
         )
 
     def test_all(self):
         """Test all() method"""
-        FileStorage._FileStorage__objects_dict = {}
+        FileStorage._FileStorage__objects = {}
         self.assertEqual(storage.all(), {})
 
         # add object and check
@@ -61,7 +61,7 @@ class TestFileStorage(unittest.TestCase):
         obj = User()
         storage.new(obj)
         key = f"{type(obj).__name__}.{obj.id}"
-        self.assertTrue(key in FileStorage._FileStorage__objects_dict)
+        self.assertTrue(key in FileStorage._FileStorage__objects)
 
         # no argument passed
         with self.assertRaises(TypeError) as e:
@@ -97,7 +97,7 @@ class TestFileStorage(unittest.TestCase):
     def test_reload(self):
         """Test reload() method"""
         storage.reload()
-        self.assertEqual(FileStorage._FileStorage__objects_dict, {})
+        self.assertEqual(FileStorage._FileStorage__objects, {})
         obj = User()
         storage.new(obj)
         storage.save()

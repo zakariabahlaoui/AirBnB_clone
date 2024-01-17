@@ -14,16 +14,16 @@ class FileStorage:
     """
 
     __file_path = "file.json"
-    __objects_dict = {}
+    __objects = {}
 
     def all(self):
         """Return objects dictionary"""
-        return FileStorage.__objects_dict
+        return FileStorage.__objects
 
     def new(self, obj):
         """Sets in objects dictionary"""
         key = f"{obj.__class__.__name__}.{obj.id}"
-        FileStorage.__objects_dict[key] = obj
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """Serializes objects dictionary to the JSON file"""
@@ -31,7 +31,7 @@ class FileStorage:
             # make a dictionary that includes objects as dictionaries
             dict = {
                 key: value.to_dict()
-                for key, value in FileStorage.__objects_dict.items()
+                for key, value in FileStorage.__objects.items()
             }
             # save the dictionary to the json file
             json.dump(dict, file)
@@ -52,7 +52,7 @@ class FileStorage:
                 key: classes[value["__class__"]](**value)
                 for key, value in dict.items()
             }
-            FileStorage.__objects_dict = dict
+            FileStorage.__objects = dict
 
     def get_app_classes(self):
         """Get a dictionary that holds all app classes | names, references"""
