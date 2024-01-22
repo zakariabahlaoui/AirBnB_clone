@@ -1,10 +1,14 @@
 section.places {
     text-align: center;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
 }
 
 section.places h1 {
     text-align: left;
-    font-size: 30px
+    font-size: 30px;
+    flex-basis: 100%;
 }
 
 section.places article {
@@ -13,11 +17,10 @@ section.places article {
     margin: 20px;
     border: 1px solid #FF5A5F;
     border-radius: 4px;
-    display: inline-block;
     position: relative;
 }
 
-section.places article h2 {
+section.places article>h2 {
     font-size: 30px;
     text-align: center;
     margin-top: 15px;
@@ -81,6 +84,12 @@ section.places article .description {
 section.places article .amenities,
 section.places article .reviews {
     margin-top: 40px;
+    text-align: left;
+}
+
+section.places article .amenities ul,
+section.places article .reviews ul {
+    padding: 0;
 }
 
 section.places article .amenities h2,
@@ -96,8 +105,30 @@ section.places article .reviews ul li {
 
 section.places article .reviews ul li h3 {
     font-size: 14px;
+    margin-bottom: 0;
 }
 
 section.places article .reviews ul li p {
     font-size: 12px;
+    margin-top: 5px;
+}
+
+section.places article .amenities ul li {
+    background-repeat: no-repeat;
+    background-size: 24px;
+    padding-left: 40px;
+    margin: 10px 0;
+    line-height: 26px;
+}
+
+section.places article .amenities ul li.icon-tv {
+    background-image: url(../images/icon_tv.png);
+}
+
+section.places article .amenities ul li.icon-wifi {
+    background-image: url(../images/icon_wifi.png);
+}
+
+section.places article .amenities ul li.icon-pets {
+    background-image: url(../images/icon_pets.png);
 }
