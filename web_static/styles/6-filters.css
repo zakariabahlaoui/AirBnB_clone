@@ -55,6 +55,7 @@ section.filters ul.popover {
     display: none;
     margin: 18px 0 0 -30px;
     padding: 25px;
+    position: relative;
     z-index: 1;
 }
 
